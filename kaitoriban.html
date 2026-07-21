@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>カイトリ番 - 特定金属くず買受の法令対応システム | Social Bridge株式会社</title>
+  <meta name="description" content="金属盗対策法に対応した特定金属くず買受の記録システム「カイトリ番」。本人確認から記録・3年保存までを現場で約30秒に。国と自治体、両方の規制に対応します。">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --ink: #131c2b;
+      --ink-soft: rgba(19,28,43,0.68);
+      --paper: #ffffff;
+      --surface: #f4f6fb;
+      --muted: #6b7686;
+      --accent: #2f5fed;
+      --accent-deep: #1c3fc4;
+      --accent-tint: rgba(47,95,237,0.08);
+      --accent-green: #3fae54;
+      --hero-a: #050c1f;
+      --hero-b: #0d2352;
+      --hero-c: #14418a;
+      --error: #d1453b;
+      --success: #1f8a5f;
+      --rule: rgba(19,28,43,0.10);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--paper);
+      color: var(--ink);
+      font-family: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.85;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .wordmark, .btn, button {
+      font-family: 'M PLUS Rounded 1c', 'Noto Sans JP', sans-serif;
+    }
+
+    a { color: inherit; }
+
+    .shell {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* Top bar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s ease;
+    }
+    .back-link:hover { color: var(--accent-deep); }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon { flex: none; display: block; }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .wordmark {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+    }
+    .wordmark span { color: var(--accent); }
+
+    .brand-tagline {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .topbar nav {
+      display: flex;
+      gap: 28px;
+    }
+    .topbar nav a {
+      font-size: 13.5px;
+      color: var(--ink-soft);
+      text-decoration: none;
+    }
+    .topbar nav a:hover { color: var(--accent-deep); }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      padding: 76px 0 0;
+      text-align: center;
+      background: linear-gradient(180deg, var(--hero-a) 0%, var(--hero-b) 55%, var(--hero-c) 100%);
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px);
+      background-size: 26px 26px;
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 10%;
+      width: 640px;
+      height: 640px;
+      transform: translate(-50%, -30%);
+      background: radial-gradient(circle, rgba(63,174,84,0.16) 0%, transparent 68%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding-bottom: 88px;
+    }
+
+    .hero .eyebrow {
+      background: rgba(255,255,255,0.14);
+      color: #d9e6ff;
+    }
+
+    h1 {
+      font-size: clamp(28px, 4.6vw, 44px);
+      font-weight: 700;
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+      text-wrap: balance;
+      margin-bottom: 22px;
+    }
+
+    .hero .lede {
+      max-width: 600px;
+      margin: 0 auto 40px;
+      color: rgba(255,255,255,0.8);
+      font-size: 16.5px;
+      line-height: 1.95;
+      text-wrap: balance;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--accent-deep);
+      background: var(--accent-tint);
+      padding: 7px 16px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 30px;
+      font-size: 14.5px;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .btn--solid {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn--solid:hover {
+      background: var(--accent-deep);
+    }
+
+    .btn--outline {
+      color: var(--ink);
+      border-color: var(--rule);
+      background: var(--paper);
+    }
+    .btn--outline:hover {
+      border-color: var(--accent);
+      color: var(--accent-deep);
+    }
+
+    .btn--hero-solid {
+      background: #fff;
+      color: var(--accent-deep);
+    }
+    .btn--hero-solid:hover {
+      background: #d9e6ff;
+    }
+
+    .btn--hero-outline {
+      color: #fff;
+      border-color: rgba(255,255,255,0.35);
+      background: transparent;
+    }
+    .btn--hero-outline:hover {
+      border-color: #fff;
+    }
+
+    /* Bridge silhouette bridging hero into the page */
+    .bridge-divider {
+      display: block;
+      width: 100%;
+      max-width: 900px;
+      height: 90px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Sections */
+    .section {
+      padding: 88px 0;
+    }
+
+    .section--surface {
+      background: var(--surface);
+    }
+
+    .section-head {
+      max-width: 600px;
+      margin: 0 auto 48px;
+      text-align: center;
+    }
+
+    .section-head h2 {
+      font-size: clamp(22px, 3vw, 29px);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 10px 0 14px;
+      text-wrap: balance;
+    }
+
+    .section-head p {
+      color: var(--ink-soft);
+      font-size: 15px;
+    }
+
+    /* Card grids */
+    .grid {
+      display: grid;
+      gap: 24px;
+    }
+    .grid--2 { grid-template-columns: 1fr 1fr; }
+    .grid--3 { grid-template-columns: repeat(3, 1fr); }
+
+    .card {
+      padding: 30px 26px;
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+    }
+
+    .card .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--accent-deep);
+      background: var(--accent-tint);
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .card h3 {
+      font-size: 17.5px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .card p {
+      font-size: 14.5px;
+      color: var(--ink-soft);
+      line-height: 1.85;
+    }
+
+    /* Dual regulation compare */
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .compare-col {
+      padding: 32px 28px;
+      border-radius: 14px;
+      background: var(--paper);
+      border: 1px solid var(--rule);
+    }
+    .compare-col h3 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .compare-col ul { list-style: none; }
+    .compare-col li {
+      font-size: 14.5px;
+      color: var(--ink-soft);
+      padding: 10px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .compare-col li:last-child { border-bottom: none; }
+
+    .callout {
+      margin-top: 28px;
+      padding: 22px 26px;
+      border-radius: 12px;
+      background: var(--accent-tint);
+      font-size: 14.5px;
+      color: var(--ink);
+      line-height: 1.85;
+    }
+
+    /* Paper vs system list */
+    .versus {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .versus-col {
+      padding: 30px 26px;
+      border-radius: 14px;
+      border: 1px solid var(--rule);
+    }
+    .versus-col.bad { background: rgba(209,69,59,0.045); }
+    .versus-col.good { background: rgba(31,138,95,0.05); border-color: rgba(31,138,95,0.2); }
+    .versus-col h3 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin-bottom: 18px;
+    }
+    .versus-col.bad h3 { color: var(--error); }
+    .versus-col.good h3 { color: var(--success); }
+    .versus-col ul { list-style: none; }
+    .versus-col li {
+      display: flex;
+      gap: 12px;
+      font-size: 14.5px;
+      color: var(--ink-soft);
+      padding: 8px 0;
+    }
+    .versus-col li .mark {
+      flex: none;
+      font-size: 14px;
+      font-weight: 700;
+      margin-top: 1px;
+    }
+    .versus-col.bad .mark { color: var(--error); }
+    .versus-col.good .mark { color: var(--success); }
+
+    /* 30s flow */
+    .flow {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .flow-step {
+      flex: 1 1 140px;
+      text-align: center;
+      padding: 0 6px;
+    }
+    .flow-step .step-num {
+      width: 38px;
+      height: 38px;
+      margin: 0 auto 14px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14.5px;
+      font-weight: 700;
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+    }
+    .flow-step h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .flow-step p {
+      font-size: 13px;
+      color: var(--ink-soft);
+      line-height: 1.7;
+    }
+    .flow-arrow {
+      flex: none;
+      align-self: center;
+      color: var(--rule);
+      font-size: 18px;
+      padding-top: 8px;
+    }
+
+    .flow-note {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 13.5px;
+      color: var(--muted);
+    }
+
+    /* Schedule stepper */
+    .stepper {
+      position: relative;
+      padding-left: 36px;
+    }
+    .stepper::before {
+      content: '';
+      position: absolute;
+      left: 9px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: var(--rule);
+      border-radius: 2px;
+    }
+    .stepper-item {
+      position: relative;
+      padding-bottom: 40px;
+    }
+    .stepper-item:last-child { padding-bottom: 0; }
+    .stepper-item::before {
+      content: '';
+      position: absolute;
+      left: -36px;
+      top: 4px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--paper);
+      border: 2px solid var(--accent);
+    }
+    .stepper-item.final::before {
+      background: var(--accent);
+    }
+    .stepper-item .tag {
+      display: inline-block;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--accent-deep);
+      margin-bottom: 6px;
+    }
+    .stepper-item h4 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .stepper-item p {
+      font-size: 14.5px;
+      color: var(--ink-soft);
+    }
+
+    /* Pricing */
+    .price-card {
+      max-width: 440px;
+      margin: 0 auto;
+      padding: 44px 40px;
+      border-radius: 18px;
+      border: 1px solid var(--rule);
+      text-align: center;
+      background: var(--paper);
+      box-shadow: 0 1px 2px rgba(19,28,43,0.04), 0 16px 40px rgba(19,28,43,0.06);
+    }
+    .price-card .label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .price-card .amount {
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+    .price-card .amount small {
+      font-size: 15px;
+      color: var(--muted);
+      font-weight: 400;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .price-card .note {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--rule);
+      font-size: 13.5px;
+      color: var(--ink-soft);
+      line-height: 1.85;
+      text-align: left;
+    }
+    .price-card .btn { margin-top: 28px; }
+
+    /* FAQ */
+    .faq-item {
+      border-bottom: 1px solid var(--rule);
+    }
+    .faq-item summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 22px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      font-size: 15.5px;
+      font-weight: 500;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: '+';
+      flex: none;
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--accent);
+    }
+    .faq-item[open] summary::after {
+      content: '\2212';
+    }
+    .faq-item p {
+      padding-bottom: 24px;
+      color: var(--ink-soft);
+      font-size: 14.5px;
+      max-width: 620px;
+    }
+
+    /* Contact form */
+    .form-group { margin-bottom: 20px; }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .required { color: var(--error); }
+
+    input[type="text"], input[type="email"], input[type="tel"], textarea, select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-tint);
+    }
+    textarea { resize: vertical; min-height: 120px; }
+
+    .button-group { display: flex; gap: 12px; margin-top: 28px; }
+    button {
+      flex: 1;
+      padding: 13px 24px;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 14.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    button:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+    button[type="reset"] { background: transparent; color: var(--muted); border-color: var(--rule); }
+    button[type="reset"]:hover { color: var(--ink); border-color: var(--ink-soft); }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .alert {
+      padding: 16px;
+      margin-bottom: 24px;
+      border-radius: 10px;
+      border-left: 3px solid;
+      background: var(--surface);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .alert.error { border-color: var(--error); color: var(--error); }
+    .alert.success { border-color: var(--success); color: var(--success); }
+    .alert.info { border-color: var(--accent); color: var(--ink); }
+
+    .spinner {
+      display: inline-block;
+      width: 13px; height: 13px;
+      border: 2px solid rgba(255,255,255,0.35);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Footer */
+    footer {
+      padding: 56px 0 72px;
+      text-align: center;
+      border-top: 1px solid var(--rule);
+      background: var(--surface);
+    }
+    footer .company {
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    footer .meta {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 2;
+    }
+    footer .meta a { text-decoration: none; color: var(--accent-deep); }
+    footer .meta a:hover { color: var(--ink); }
+
+    /* Mission band */
+    .mission-band {
+      padding: 40px 0;
+      background: rgba(63,174,84,0.06);
+      border-top: 1px solid rgba(63,174,84,0.18);
+      border-bottom: 1px solid rgba(63,174,84,0.18);
+    }
+    .mission-band p {
+      max-width: 640px;
+      margin: 0 auto;
+      padding-left: 20px;
+      border-left: 3px solid var(--accent-green);
+      font-size: 14px;
+      color: var(--ink-soft);
+      line-height: 1.9;
+    }
+
+    @media (max-width: 720px) {
+      .shell { padding: 0 20px; }
+      .topbar nav { display: none; }
+      .grid--2, .grid--3, .compare, .versus, .form-row { grid-template-columns: 1fr; }
+      .flow { flex-direction: column; align-items: stretch; }
+      .flow-arrow { display: none; }
+      .flow-step { text-align: left; display: flex; gap: 16px; align-items: flex-start; }
+      .flow-step .step-num { margin: 0; flex: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="shell">
+    <div class="topbar">
+      <a href="https://social-bridge.net" class="back-link">← Social Bridge株式会社</a>
+      <div class="brand">
+        <svg class="brand-icon" width="30" height="20" viewBox="0 0 30 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M1 17 C 8 4, 22 4, 29 17" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M6 17 V11 M12 17 V8.5 M18 17 V8.5 M24 17 V11" stroke="var(--muted)" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <div class="brand-text">
+          <span class="wordmark">カイトリ<span>番</span></span>
+          <span class="brand-tagline">by Social Bridge</span>
+        </div>
+      </div>
+      <nav>
+        <a href="#features">機能</a>
+        <a href="#flow">30秒フロー</a>
+        <a href="#pricing">料金</a>
+        <a href="#contact">お問い合わせ</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="shell hero-content">
+      <p class="eyebrow">金属盗対策法 対応システム</p>
+      <h1>特定金属くずの買受に、<br>届出と記録という新しい義務が生まれました。</h1>
+      <p class="lede">
+        令和8年6月1日施行。既存事業者の届出期限は2026年8月31日。カイトリ番は、本人確認から記録・保管までを現場で約30秒に収め、国と自治体、両方の規制に対応します。
+      </p>
+      <div class="cta-row">
+        <a href="#contact" class="btn btn--hero-solid">お問い合わせ</a>
+        <a href="#flow" class="btn btn--hero-outline">30秒フローを見る</a>
+      </div>
+    </div>
+    <svg class="bridge-divider" viewBox="0 0 900 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M0 78 C 220 10, 680 10, 900 78" stroke="#bcd2ff" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+      <path d="M0 78 L0 60 M900 78 L900 60" stroke="#bcd2ff" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+      <path d="M225 78 L225 26 M450 78 L450 15 M675 78 L675 26" stroke="#bcd2ff" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+    </svg>
+  </section>
+
+  <!-- 01 法改正の要点 -->
+  <section class="section">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">01 — 法改正の要点</p>
+        <h2>何が変わったのか</h2>
+        <p>盗難特定金属製物品の処分の防止等に関する法律（令和7年法律第75号）</p>
+      </div>
+      <div class="grid grid--2">
+        <div class="card">
+          <span class="num">01</span>
+          <h3>対象は「特定金属くず」</h3>
+          <p>主として銅から成る金属くず（ピカ線・込銅・雑線・砲金・真鍮 等）の買受けが規制対象になりました。</p>
+        </div>
+        <div class="card">
+          <span class="num">02</span>
+          <h3>4つの新しい義務</h3>
+          <p>①公安委員会への届出 ②相手方の本人確認 ③記録の作成 ④記録の3年間保存 が義務化されています。</p>
+        </div>
+        <div class="card">
+          <span class="num">03</span>
+          <h3>猶予期間はありません</h3>
+          <p>令和8年6月1日にすでに施行済みです。義務はすでに発生しています。</p>
+        </div>
+        <div class="card">
+          <span class="num">04</span>
+          <h3>届出期限は8月31日</h3>
+          <p>既存事業者の届出期限は2026年8月31日。未届出のままの買受けは違反リスクを伴います。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 二重規制 -->
+  <section class="section section--surface">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">02 — 見落としがちな論点</p>
+        <h2>国の届出だけでは、足りない地域があります</h2>
+        <p>都道府県の条例による上乗せ規制が存在するため、「国の届出さえ出せば安心」とは限りません。</p>
+      </div>
+      <div class="compare">
+        <div class="compare-col">
+          <h3>国 — 金属盗対策法</h3>
+          <ul>
+            <li>特定金属くず（銅主体）が対象</li>
+            <li>公安委員会への届出</li>
+            <li>本人確認・記録・3年保存</li>
+            <li>全国一律の義務</li>
+          </ul>
+        </div>
+        <div class="compare-col">
+          <h3>自治体条例（例：大阪府）</h3>
+          <ul>
+            <li>条例による上乗せ・横出し規制</li>
+            <li>本人確認事項・様式が国と異なる場合あり</li>
+            <li>標識の掲示義務（自治体独自様式）</li>
+            <li>国＋自治体、両方を満たす必要</li>
+          </ul>
+        </div>
+      </div>
+      <p class="callout">
+        全国対応をうたうシステムほど、こうした自治体ごとの様式までは面倒を見ません。カイトリ番は、地域の条例様式にも対応します。
+      </p>
+    </div>
+  </section>
+
+  <!-- 03 紙 vs カイトリ番 -->
+  <section class="section">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">03 — 現場のコスト</p>
+        <h2>この義務は、「即現金化」という現場の強みを直撃します</h2>
+        <p>紙で対応した場合と、カイトリ番で対応した場合の違いです。</p>
+      </div>
+      <div class="versus">
+        <div class="versus-col bad">
+          <h3>紙で対応（＝何もしないコスト）</h3>
+          <ul>
+            <li><span class="mark">✕</span>免許証をコピー機まで持って行く</li>
+            <li><span class="mark">✕</span>台帳に手書きで転記（品目・重量・金額）</li>
+            <li><span class="mark">✕</span>国様式＋自治体様式を別々に記入</li>
+            <li><span class="mark">✕</span>3年分の紙を保管・検索困難</li>
+            <li><span class="mark">✕</span>警察の立入時に該当伝票を探し回る</li>
+          </ul>
+        </div>
+        <div class="versus-col good">
+          <h3>カイトリ番で対応</h3>
+          <ul>
+            <li><span class="mark">✓</span>スマホで撮影 → AIが自動読取</li>
+            <li><span class="mark">✓</span>計量 → 品目選択で記録が自動生成</li>
+            <li><span class="mark">✓</span>国＋自治体 両様式・標識を自動出力</li>
+            <li><span class="mark">✓</span>電子保管＋改ざん検知で3年分を即検索</li>
+            <li><span class="mark">✓</span>「検査モード」を見せるだけ</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 機能一覧 -->
+  <section class="section section--surface" id="features">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">04 — できること</p>
+        <h2>現場で使う、6つの機能</h2>
+      </div>
+      <div class="grid grid--3">
+        <div class="card">
+          <span class="num">01</span>
+          <h3>本人確認AI読取</h3>
+          <p>免許証・マイナンバーカードを撮影すると、氏名・住所・生年月日を自動抽出。1万円超の確認義務に対応します。</p>
+        </div>
+        <div class="card">
+          <span class="num">02</span>
+          <h3>特定金属くず台帳</h3>
+          <p>銅系品目を自動判定し、国・自治体の記載事項を満たす形で買受記録を自動作成します。</p>
+        </div>
+        <div class="card">
+          <span class="num">03</span>
+          <h3>計量→買取フロー</h3>
+          <p>計量値と品目・単価から買取記録を生成。仕切書（買取証明）も自動発行・電子署名に対応します。</p>
+        </div>
+        <div class="card">
+          <span class="num">04</span>
+          <h3>警察提出用CSV</h3>
+          <p>台帳をワンタップでCSV出力。立入・照会時に該当記録をすぐ提示できる「検査モード」を搭載しています。</p>
+        </div>
+        <div class="card">
+          <span class="num">05</span>
+          <h3>3年保存＋改ざん検知</h3>
+          <p>電子保管で3年間の保存義務に対応。完全性ハッシュにより記録の改ざんを検知します。</p>
+        </div>
+        <div class="card">
+          <span class="num">06</span>
+          <h3>届出情報・標識管理</h3>
+          <p>届出番号・提出先・期限を記録。国様式＋自治体様式の標識を、店名入りで出力できます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 30秒フロー -->
+  <section class="section" id="flow">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">05 — 現場の体験</p>
+        <h2>持込から記録完了まで、約30秒</h2>
+        <p>現場を止めない。今までの買取のスピードは、そのまま。</p>
+      </div>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="step-num">1</div>
+          <h4>撮影</h4>
+          <p>本人確認書類をスマホで撮影</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="step-num">2</div>
+          <h4>自動読取</h4>
+          <p>AIが氏名・住所を自動で抽出</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="step-num">3</div>
+          <h4>計量・品目</h4>
+          <p>重量と品目を選択（銅系は自動判定）</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="step-num">4</div>
+          <h4>記録生成</h4>
+          <p>台帳・仕切書を自動作成</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="step-num">5</div>
+          <h4>完了</h4>
+          <p>3年保存＋改ざん検知で保管</p>
+        </div>
+      </div>
+      <p class="flow-note">常連（本人確認情報を登録済み）のお客様には、ワンタップで完了する簡易フローもご用意しています。</p>
+    </div>
+  </section>
+
+  <!-- 06 導入スケジュール -->
+  <section class="section section--surface">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">06 — 導入までの流れ</p>
+        <h2>届出期限から逆算したスケジュール</h2>
+        <p>届出は行政書士チャネルとの連携も可能です。カイトリ番の初期設定と並行して進められます。</p>
+      </div>
+      <div class="stepper">
+        <div class="stepper-item">
+          <span class="tag">STEP 1</span>
+          <h4>お申込み・方針決定</h4>
+          <p>ご提案内容のご確認・お申込み。届出書類の準備を開始します（行政書士連携も可能）。</p>
+        </div>
+        <div class="stepper-item">
+          <span class="tag">STEP 2</span>
+          <h4>届出提出・初期設定</h4>
+          <p>公安委員会への届出提出。店舗情報・品目・単価・計量器を登録します。</p>
+        </div>
+        <div class="stepper-item">
+          <span class="tag">STEP 3</span>
+          <h4>現場トレーニング</h4>
+          <p>スタッフ研修（撮影〜記録の30秒フロー）。店頭に標識を掲示します。</p>
+        </div>
+        <div class="stepper-item final">
+          <span class="tag">STEP 4 — 届出期限 8/31</span>
+          <h4>本番運用開始</h4>
+          <p>期限内に届出完了。当日から国＋自治体対応の記録が自動で残る状態になります。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 料金 -->
+  <section class="section" id="pricing">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">07 — 料金</p>
+        <h2>料金</h2>
+      </div>
+      <div class="price-card">
+        <p class="label">システム利用料（初期・一括）</p>
+        <p class="amount">¥200,000<small> （税別）</small></p>
+        <div class="note">
+          保守・運用費用はご契約内容によって異なります。既存の保守契約がある場合、その枠内でご案内できる場合もございますので、まずはお問い合わせください。
+        </div>
+        <a href="#contact" class="btn btn--solid">お見積もりを依頼する</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 FAQ -->
+  <section class="section section--surface">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">08 — よくある質問</p>
+        <h2>よくある質問</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>古物商許可を持っていれば、届出は不要ですか？</summary>
+          <p>いいえ、別の制度です。古物営業法の許可と、金属盗対策法に基づく公安委員会への届出は別々に必要です。混同されるケースが多いのでご注意ください。</p>
+        </details>
+        <details class="faq-item">
+          <summary>個人事業主でも対象になりますか？</summary>
+          <p>はい。事業として特定金属くずを買い受ける場合は、法人・個人事業主を問わず対象になります。</p>
+        </details>
+        <details class="faq-item">
+          <summary>大阪府以外の地域でも使えますか？</summary>
+          <p>はい。カイトリ番は国の様式に加え、各自治体の条例様式にも対応できるよう設計されています。導入時に該当地域の要件を確認いたします。</p>
+        </details>
+        <details class="faq-item">
+          <summary>導入にはどのくらい時間がかかりますか？</summary>
+          <p>店舗情報や品目・単価の登録、スタッフ研修まで含めて、おおむね数週間程度が目安です。詳しくは導入スケジュールをご覧ください。</p>
+        </details>
+        <details class="faq-item">
+          <summary>導入後のサポートはありますか？</summary>
+          <p>法令改正や自治体条例の様式変更にも継続して対応します。運用開始後もお気軽にご相談いただけます。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 Contact -->
+  <section class="section" id="contact">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">09 — お問い合わせ</p>
+        <h2>まずは30秒フローを体感してください</h2>
+        <p>スマホひとつで、本人確認から記録作成までを実際にご覧いただけます。</p>
+      </div>
+
+      <div id="alerts-container" style="max-width: 620px; margin: 0 auto;"></div>
+
+      <form id="kaitoribanForm" method="POST" action="kaitoriban-handler.php" novalidate style="max-width: 620px; margin: 0 auto;">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="company">会社名 <span class="required">*</span></label>
+            <input type="text" id="company" name="company" required>
+          </div>
+          <div class="form-group">
+            <label for="name">お名前 <span class="required">*</span></label>
+            <input type="text" id="name" name="name" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">メールアドレス <span class="required">*</span></label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">電話番号</label>
+            <input type="tel" id="phone" name="phone">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="prefecture">都道府県</label>
+          <input type="text" id="prefecture" name="prefecture" placeholder="例：大阪府">
+        </div>
+
+        <div class="form-group">
+          <label for="subject">ご相談内容 <span class="required">*</span></label>
+          <select id="subject" name="subject" required>
+            <option value="">選択してください</option>
+            <option value="demo">デモを依頼する</option>
+            <option value="quote">お見積もり</option>
+            <option value="document">資料請求</option>
+            <option value="other">その他</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">メッセージ <span class="required">*</span></label>
+          <textarea id="message" name="message" required></textarea>
+        </div>
+
+        <div class="button-group">
+          <button type="submit" id="submitBtn">送信</button>
+          <button type="reset">リセット</button>
+        </div>
+
+      </form>
+    </div>
+  </section>
+
+  <div class="mission-band">
+    <div class="shell">
+      <p>特定金属くずの適正な買受は、資源循環の入り口です。Social Bridgeは、テクノロジーで法令順守と資源循環の両立を支えます。</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="shell">
+      <p class="company">Social Bridge 株式会社</p>
+      <p class="meta">
+        代表取締役CEO 宋 浩典<br>
+        TEL <a href="tel:0786002755">078-600-2755</a> ／ <a href="mailto:song@social-bridge.net">song@social-bridge.net</a><br>
+        <a href="https://social-bridge.net" target="_blank" rel="noopener">social-bridge.net</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="kaitoriban.js"></script>
+
+</body>
+</html>
