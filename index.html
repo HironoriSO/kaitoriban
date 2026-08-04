@@ -1583,7 +1583,7 @@
     "</div>";
   var closeBtn = el("button", {
     position: "absolute", top: "10px", right: "10px", background: "rgba(255,255,255,0.15)",
-    border: "none", color: "#fff", width: "28px", height: "28px", borderRadius: "6px",
+    border: "none", padding: "0", color: "#fff", width: "28px", height: "28px", borderRadius: "6px",
     cursor: "pointer", fontSize: "14px", lineHeight: "1",
   }, { "aria-label": "チャットを閉じる" });
   closeBtn.textContent = "×";
@@ -1678,7 +1678,7 @@
     fontFamily: '"Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif',
   }, { placeholder: "ご質問を入力してください", "aria-label": "質問入力" });
   var sendBtn = el("button", {
-    background: COLORS.blue, color: "#fff", border: "none", borderRadius: "8px",
+    flex: "none", background: COLORS.blue, color: "#fff", border: "none", borderRadius: "8px",
     padding: "0 16px", fontSize: "13px", fontWeight: "700", cursor: "pointer",
   });
   sendBtn.textContent = "送信";
@@ -1741,7 +1741,7 @@
   // 起動ボタン
   var launcherRow = el("div", { display: "flex", justifyContent: "flex-end" });
   var launcher = el("button", {
-    width: "58px", height: "58px", borderRadius: "50%", background: COLORS.blue, border: "none",
+    flex: "none", padding: "0", width: "58px", height: "58px", borderRadius: "50%", background: COLORS.blue, border: "none",
     boxShadow: "0 10px 26px rgba(14,85,144,0.35)", cursor: "pointer",
     display: "flex", alignItems: "center", justifyContent: "center",
   }, { "aria-label": "チャットを開く" });
