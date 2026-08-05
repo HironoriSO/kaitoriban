@@ -529,7 +529,8 @@
       gap: 20px;
     }
     .compare-col {
-      padding: 32px 28px;
+      position: relative;
+      padding: 32px 28px 56px;
       border-radius: 14px;
       background: var(--paper);
       border: 1px solid var(--rule);
@@ -549,6 +550,20 @@
       border-bottom: 1px solid var(--rule);
     }
     .compare-col li:last-child { border-bottom: none; }
+    .compare-col-link {
+      position: absolute;
+      left: 28px;
+      bottom: 20px;
+    }
+    .compare-col-link a {
+      color: var(--accent-deep);
+      font-size: 12px;
+      font-weight: 500;
+      text-decoration: underline;
+    }
+    .compare-col-link a:hover {
+      color: var(--ink);
+    }
 
     .callout {
       margin-top: 28px;
@@ -889,6 +904,163 @@
       line-height: 1.9;
     }
 
+    /* Feature cards (05 — できること) — clickable, open a detail popup */
+    #features .card {
+      cursor: pointer;
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+    }
+    #features .card:hover,
+    #features .card:focus-visible {
+      background: var(--surface);
+      box-shadow: 0 4px 14px rgba(19,28,43,0.08);
+    }
+    /* Hidden instantly (not via the transition above) while its popup is open,
+       so the popup reads as that same card growing to fill the screen. */
+    #features .card.is-modal-source {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .feature-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(19,28,43,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      /* Higher than the chat widget and back-to-top button (both 2147483000),
+         so a click on either area closes this popup first, requiring a second
+         click to actually activate that button. */
+      z-index: 2147483001;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .feature-modal-overlay.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .feature-modal {
+      position: relative;
+      max-width: 480px;
+      width: 100%;
+      background: var(--paper);
+      border-radius: 18px;
+      box-shadow: 0 24px 60px rgba(19,28,43,0.25);
+      /* Safe to clip here: JS animates this box's real width/height/top/left
+         (not a visual transform:scale trick), so nothing ever renders larger
+         than the box actually is — this just crops content that genuinely
+         doesn't fit yet while the box is still small. */
+      overflow: hidden;
+    }
+    .feature-modal-inner {
+      position: relative;
+      padding: 40px 34px 34px;
+    }
+    .feature-modal-inner .num {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--accent-deep);
+      background: var(--accent-tint);
+      border-radius: 8px;
+    }
+    .feature-modal h3 {
+      margin-top: 30px;
+      font-size: 21px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      letter-spacing: -0.01em;
+    }
+    .feature-modal p {
+      font-size: 15px;
+      color: var(--ink-soft);
+      line-height: 1.9;
+    }
+    /* Fixed size for every feature's photo, so they're all consistent
+       regardless of the source image's own dimensions. */
+    .feature-modal-photo {
+      display: block;
+      width: 100%;
+      height: 200px;
+      /* contain: the whole photo is always fully visible, never cropped —
+         cover was cutting into real table content on narrower viewports,
+         where this box's actual ratio is tighter than these photos assume.
+         Each photo file is padded (edge-extended, not a flat fill) close to
+         this box's typical ratio, so any leftover letterboxing stays small. */
+      object-fit: contain;
+      border-radius: 12px;
+      margin-top: 22px;
+      background: var(--surface);
+      /* Soft, low-opacity dark-gray border — a faint outline rather than a
+         hard line, just enough to separate the photo from the white card. */
+      border: 1px solid rgba(19, 28, 43, 0.15);
+    }
+    .feature-modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 16px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .feature-modal-close:hover {
+      background: var(--rule);
+      color: var(--ink);
+    }
+
+    /* Back to top — sits just left of the chat widget's launcher button (which is
+       fixed at right:20px, width:58px), so it lines up at the same height. */
+    .back-to-top {
+      position: fixed;
+      right: 90px;
+      bottom: 20px;
+      z-index: 2147483000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 52px;
+      padding: 0 22px;
+      border-radius: 999px;
+      border: none;
+      background: #146FB9;
+      color: #fff;
+      font-family: 'M PLUS Rounded 1c', 'Noto Sans JP', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      box-shadow: 0 10px 26px rgba(20,111,185,0.35);
+      opacity: 0;
+      transform: translateY(16px);
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease;
+    }
+    .back-to-top.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .back-to-top:hover {
+      background: #0E5590;
+    }
+
     @media (max-width: 720px) {
       .shell { padding: 0 20px; }
       .topbar nav { display: none; }
@@ -901,6 +1073,8 @@
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
+      .back-to-top { transition: opacity 0.01s linear; }
+      #features .card, .feature-modal-overlay, .feature-modal, .feature-modal-inner { transition: none; }
     }
   </style>
 </head>
@@ -1169,6 +1343,7 @@
             <li>本人確認・記録・3年保存</li>
             <li>全国一律の義務</li>
           </ul>
+          <p class="compare-col-link"><a href="https://www.npa.go.jp/bureau/safetylife/scrap/scrap.html" target="_blank" rel="noopener">国の制度を確認する</a></p>
         </div>
         <div class="compare-col">
           <h3>自治体条例（例：大阪府）</h3>
@@ -1179,6 +1354,7 @@
             <li>標識の掲示義務（自治体独自様式）</li>
             <li>国＋自治体、両方を満たす必要</li>
           </ul>
+          <p class="compare-col-link"><a href="https://www.police.pref.osaka.lg.jp/tetsuduki/kyoninka/kobutsu/tokuteikinzoku/23881.html" target="_blank" rel="noopener">大阪府の制度を確認する</a></p>
         </div>
       </div>
       <p class="callout">
@@ -1228,32 +1404,32 @@
         <h2>現場で使う、6つの機能</h2>
       </div>
       <div class="grid grid--3">
-        <div class="card">
+        <div class="card" tabindex="0" role="button" aria-haspopup="dialog" data-photo="photos/feature-01.png" data-photo-alt="本人確認AI読取の操作画面。本人確認書類の撮影ボタンと読取説明を表示。">
           <span class="num">01</span>
           <h3>本人確認AI読取</h3>
           <p>免許証・マイナンバーカードを撮影すると、氏名・住所・生年月日を自動抽出。1万円超の確認義務に対応します。</p>
         </div>
-        <div class="card">
+        <div class="card" tabindex="0" role="button" aria-haspopup="dialog" data-photo="photos/feature-02.png" data-photo-alt="特定金属くず台帳の操作画面。買受記録一覧を表示（相手方氏名・確認書類番号は一部マスク済み）。">
           <span class="num">02</span>
           <h3>特定金属くず台帳</h3>
           <p>国・自治体の記載事項を満たす形で買受記録を自動作成します。</p>
         </div>
-        <div class="card">
+        <div class="card" tabindex="0" role="button" aria-haspopup="dialog" data-photo="photos/feature-03.png" data-photo-alt="計量→買取フローの操作画面。計量結果の入力とカート追加のフォームを表示。">
           <span class="num">03</span>
           <h3>計量→買取フロー</h3>
           <p>計量値と品目・単価から買取記録を生成。仕切書（買取証明）も自動発行・電子署名に対応します。</p>
         </div>
-        <div class="card">
+        <div class="card" tabindex="0" role="button" aria-haspopup="dialog" data-photo="photos/feature-04.png" data-photo-alt="警察提出用CSVの操作画面。取引件数・買受金額の集計と台帳CSV出力ボタンを表示。">
           <span class="num">04</span>
           <h3>警察提出用CSV</h3>
           <p>台帳をワンタップでCSV出力。立入・照会時に該当記録をすぐ提示できる「検査モード」を搭載しています。</p>
         </div>
-        <div class="card">
+        <div class="card" tabindex="0" role="button" aria-haspopup="dialog" data-photo="photos/feature-04.png" data-photo-alt="画像は準備中です（暫定的に警察提出用CSV画面を表示）。">
           <span class="num">05</span>
           <h3>3年保存＋改ざん検知</h3>
           <p>電子保管で3年間の保存義務に対応。完全性ハッシュにより記録の改ざんを検知します。</p>
         </div>
-        <div class="card">
+        <div class="card" tabindex="0" role="button" aria-haspopup="dialog" data-photo="photos/feature-06.png" data-photo-alt="届出情報・標識管理の操作画面。届出状態や届出番号・期限の入力フォームを表示。">
           <span class="num">06</span>
           <h3>届出情報・標識管理</h3>
           <p>届出番号・提出先・期限を記録。国様式＋自治体様式の標識を、店名入りで出力できます。</p>
@@ -1261,6 +1437,18 @@
       </div>
     </div>
   </section>
+
+  <div class="feature-modal-overlay" id="featureModalOverlay">
+    <div class="feature-modal" role="dialog" aria-modal="true" aria-labelledby="featureModalTitle">
+      <div class="feature-modal-inner">
+        <button type="button" class="feature-modal-close" aria-label="閉じる">×</button>
+        <span class="num" id="featureModalNum"></span>
+        <h3 id="featureModalTitle"></h3>
+        <p id="featureModalDesc"></p>
+        <img class="feature-modal-photo" id="featureModalPhoto" alt="">
+      </div>
+    </div>
+  </div>
 
   <!-- 06 30秒フロー -->
   <section class="section" id="flow">
@@ -1763,6 +1951,7 @@
     flex: "none", padding: "0", width: "58px", height: "58px", borderRadius: "50%", background: COLORS.blue, border: "none",
     boxShadow: "0 10px 26px rgba(14,85,144,0.35)", cursor: "pointer",
     display: "flex", alignItems: "center", justifyContent: "center",
+    transition: "background 0.2s ease",
   }, { "aria-label": "チャットを開く" });
   launcher.innerHTML =
     '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
@@ -1770,6 +1959,8 @@
     '<path d="M7.5 14 Q12 8.5 16.5 14" stroke="' + COLORS.blue + '" stroke-width="1.8" fill="none" stroke-linecap="round"/>' +
     "</svg>";
   launcher.addEventListener("click", function () { setOpen(!state.open); });
+  launcher.addEventListener("mouseenter", function () { launcher.style.background = COLORS.blueDark; });
+  launcher.addEventListener("mouseleave", function () { launcher.style.background = COLORS.blue; });
   launcherRow.appendChild(launcher);
   wrap.appendChild(launcherRow);
 
@@ -1838,6 +2029,157 @@
 
   renderMessages();
   updateSendState();
+})();
+</script>
+
+<script>
+(function () {
+  var btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'back-to-top';
+  btn.textContent = 'トップへ';
+  btn.setAttribute('aria-label', 'ページの先頭へ戻る');
+  document.body.appendChild(btn);
+
+  var SHOW_AFTER = 400;
+  function updateVisibility() {
+    btn.classList.toggle('is-visible', window.scrollY > SHOW_AFTER);
+  }
+  window.addEventListener('scroll', updateVisibility, { passive: true });
+  updateVisibility();
+
+  btn.addEventListener('click', function () {
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
+})();
+</script>
+
+<script>
+(function () {
+  var cards = document.querySelectorAll('#features .card');
+  var overlay = document.getElementById('featureModalOverlay');
+  if (!cards.length || !overlay) return;
+
+  var modalEl = overlay.querySelector('.feature-modal');
+  var modalNum = document.getElementById('featureModalNum');
+  var modalTitle = document.getElementById('featureModalTitle');
+  var modalDesc = document.getElementById('featureModalDesc');
+  var modalPhoto = document.getElementById('featureModalPhoto');
+  var closeBtn = overlay.querySelector('.feature-modal-close');
+  var lastFocused = null;
+  var activeCard = null;
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Same duration/easing for both directions, so closing is a true reverse of
+  // opening. Animates the box's real width/height/top/left (not a visual
+  // transform:scale trick) — the box is always its true size, so content
+  // just reflows inside it with no distortion and nothing can render larger
+  // than its container.
+  var ZOOM_TRANSITION = 'top 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), left 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.28s cubic-bezier(0.2, 0.8, 0.2, 1)';
+
+  function pinTo(rect) {
+    modalEl.style.position = 'fixed';
+    modalEl.style.margin = '0';
+    modalEl.style.top = rect.top + 'px';
+    modalEl.style.left = rect.left + 'px';
+    modalEl.style.width = rect.width + 'px';
+    modalEl.style.height = rect.height + 'px';
+  }
+
+  function unpin() {
+    modalEl.style.position = '';
+    modalEl.style.margin = '';
+    modalEl.style.top = '';
+    modalEl.style.left = '';
+    modalEl.style.width = '';
+    modalEl.style.height = '';
+    modalEl.style.transition = '';
+  }
+
+  function onKeydown(e) {
+    if (e.key === 'Escape') closeModal();
+  }
+
+  function openModal(card) {
+    activeCard = card;
+    modalNum.textContent = card.querySelector('.num').textContent;
+    modalTitle.textContent = card.querySelector('h3').textContent;
+    modalDesc.textContent = card.querySelector('p').textContent;
+    modalPhoto.src = card.dataset.photo || '';
+    modalPhoto.alt = card.dataset.photoAlt || '';
+    lastFocused = document.activeElement;
+
+    var cardRect = card.getBoundingClientRect();
+    overlay.classList.add('is-open');
+    card.classList.add('is-modal-source');
+    document.body.style.overflow = 'hidden';
+
+    if (!reduceMotion) {
+      var finalRect = modalEl.getBoundingClientRect(); // natural, centered size/position
+      modalEl.style.transition = 'none';
+      pinTo(cardRect);
+      void modalEl.offsetWidth; // force reflow so the browser registers the starting box
+      requestAnimationFrame(function () {
+        modalEl.style.transition = ZOOM_TRANSITION;
+        pinTo(finalRect);
+        modalEl.addEventListener('transitionend', function cleanup(e) {
+          if (e.propertyName !== 'width') return;
+          unpin(); // back to natural, flex-centered layout — stays responsive if resized while open
+          modalEl.removeEventListener('transitionend', cleanup);
+        });
+      });
+    }
+
+    document.addEventListener('keydown', onKeydown);
+    closeBtn.focus();
+  }
+
+  function closeModal() {
+    document.removeEventListener('keydown', onKeydown);
+    var cardToRestore = activeCard;
+    activeCard = null;
+
+    if (!reduceMotion && cardToRestore) {
+      // Stay fully visible/opaque for the whole shrink-back animation — only
+      // hide the overlay once the popup has actually landed back on the card.
+      var startRect = modalEl.getBoundingClientRect(); // current natural, centered rect
+      var cardRect = cardToRestore.getBoundingClientRect();
+      modalEl.style.transition = 'none';
+      pinTo(startRect);
+      void modalEl.offsetWidth;
+      modalEl.style.transition = ZOOM_TRANSITION;
+      pinTo(cardRect);
+      modalEl.addEventListener('transitionend', function cleanup(e) {
+        if (e.propertyName !== 'width') return;
+        unpin();
+        overlay.classList.remove('is-open');
+        document.body.style.overflow = '';
+        cardToRestore.classList.remove('is-modal-source');
+        modalEl.removeEventListener('transitionend', cleanup);
+      });
+    } else {
+      overlay.classList.remove('is-open');
+      document.body.style.overflow = '';
+      if (cardToRestore) cardToRestore.classList.remove('is-modal-source');
+    }
+
+    if (lastFocused && lastFocused.focus) lastFocused.focus();
+  }
+
+  cards.forEach(function (card) {
+    card.addEventListener('click', function () { openModal(card); });
+    card.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openModal(card);
+      }
+    });
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) closeModal();
+  });
 })();
 </script>
 
