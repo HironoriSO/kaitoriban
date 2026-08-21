@@ -61,7 +61,7 @@
         },
         "offers": {
           "@type": "Offer",
-          "price": "200000",
+          "price": "248000",
           "priceCurrency": "JPY",
           "url": "https://social-bridge.net/kaitoriban/#pricing"
         },
@@ -153,6 +153,30 @@
             "acceptedAnswer": {
               "@type": "Answer",
               "text": "店舗情報や品目・単価の登録、スタッフ研修まで含めて、おおむね数週間程度が目安です。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "すでに基幹システムを入れています。乗り換えが必要ですか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "いいえ。カイトリ番は単独で動きます。既存の基幹システムに買受記録の機能があるなら、無理に入れ替える必要はありません。そちらで記載事項が満たせるなら、そのままお使いいただくのが良いとお伝えしています。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "パソコンが苦手な社員でも使えますか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "はい。計量所で使うことを前提に設計しています。免許証を撮って、品目と重量と金額を入れる。それだけです。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "もっと安いプランはありませんか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "ございません。プランを分けると、お客様は選ぶ手間が、当社は管理の手間がかかります。その分を価格に乗せたくないため、全部入りで1つのプランにしています。ご予算のご都合がある場合は、3回分割（着手時・1か月後・2か月後）でのお支払いを承ります。"
             }
           },
           {
@@ -718,45 +742,128 @@
     }
 
     /* Pricing */
-    .price-card {
-      max-width: 440px;
-      margin: 0 auto;
-      padding: 44px 40px;
+    .plan-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 28px;
+      align-items: start;
+    }
+    .plan-card {
+      border: 2px solid var(--ink);
       border-radius: 18px;
-      border: 1px solid var(--rule);
-      text-align: center;
+      overflow: hidden;
       background: var(--paper);
       box-shadow: 0 1px 2px rgba(19,28,43,0.04), 0 16px 40px rgba(19,28,43,0.06);
     }
-    .price-card .label {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-    .price-card .amount {
-      font-family: 'M PLUS Rounded 1c', sans-serif;
-      font-size: 42px;
+    .plan-card__badge {
+      background: var(--ink);
+      color: #fff;
+      text-align: center;
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: -0.01em;
-      margin-bottom: 4px;
+      padding: 8px;
+      letter-spacing: 0.08em;
     }
-    .price-card .amount small {
-      font-size: 15px;
-      color: var(--muted);
-      font-weight: 400;
-      font-family: 'Noto Sans JP', sans-serif;
+    .plan-card__head {
+      padding: 30px 32px 24px;
+      border-bottom: 1px solid var(--rule);
+      background: var(--accent-tint);
     }
-    .price-card .note {
-      margin-top: 24px;
-      padding-top: 24px;
-      border-top: 1px solid var(--rule);
+    .plan-card__name {
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .plan-card__for {
       font-size: 13.5px;
       color: var(--ink-soft);
-      line-height: 1.85;
+      margin-bottom: 18px;
+    }
+    .plan-card__price {
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+    .plan-card__price small {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--muted);
+      font-family: 'Noto Sans JP', sans-serif;
+      margin-left: 4px;
+    }
+    .plan-card__unit {
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .plan-card__maint {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px dashed var(--rule);
+      font-size: 13.5px;
+      color: var(--ink-soft);
+    }
+    .plan-card__maint b { font-size: 16px; color: var(--ink); }
+    .plan-card__maint span { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .plan-card__list {
+      list-style: none;
+      margin: 0;
+      padding: 20px 32px 8px;
+      font-size: 13.5px;
+    }
+    .plan-card__list li {
+      padding: 9px 0 9px 24px;
+      position: relative;
+      border-bottom: 1px dashed var(--rule);
+      color: var(--ink-soft);
+    }
+    .plan-card__list li:last-child { border-bottom: none; }
+    .plan-card__list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      top: 9px;
+      color: var(--success);
+      font-weight: 700;
+    }
+    .plan-card__list li b { color: var(--ink); font-weight: 700; }
+    .plan-card__list li span { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .plan-card > .btn { margin: 8px 32px 28px; display: block; text-align: center; }
+    .plan-why { padding: 8px 4px; }
+    .plan-why h3 { font-size: 18px; font-weight: 700; margin-bottom: 14px; }
+    .plan-why p { font-size: 14.5px; color: var(--ink-soft); margin-bottom: 14px; }
+    .plan-why__note {
+      font-size: 13px;
+      color: var(--muted);
+      border-top: 1px solid var(--rule);
+      padding-top: 14px;
+    }
+    .pricing-table-head {
+      margin: 52px 0 16px;
+      font-size: 17px;
+      font-weight: 700;
+    }
+    .table-scroll { overflow-x: auto; }
+    table.pricing-table {
+      width: 100%;
+      min-width: 560px;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    table.pricing-table th,
+    table.pricing-table td {
+      border: 1px solid var(--rule);
+      padding: 12px 14px;
       text-align: left;
     }
-    .price-card .btn { margin-top: 28px; }
+    table.pricing-table th {
+      background: var(--surface);
+      font-weight: 700;
+    }
+    table.pricing-table tr.highlight { background: var(--accent-tint); }
 
     /* FAQ */
     .faq-item {
@@ -1064,7 +1171,7 @@
     @media (max-width: 720px) {
       .shell { padding: 0 20px; }
       .topbar nav { display: none; }
-      .grid--2, .grid--3, .compare, .versus, .form-row { grid-template-columns: 1fr; }
+      .grid--2, .grid--3, .compare, .versus, .form-row, .plan-layout { grid-template-columns: 1fr; }
       .flow { flex-direction: column; align-items: stretch; }
       .flow-arrow { display: none; }
       .flow-step { text-align: left; display: flex; gap: 16px; align-items: flex-start; }
@@ -1535,14 +1642,66 @@
       <div class="section-head">
         <p class="eyebrow">08 — 料金</p>
         <h2>料金</h2>
+        <p>買い切り型です。月額課金はありません。プランは1つだけで、変わるのは営業所の数だけです。</p>
       </div>
-      <div class="price-card">
-        <p class="label">システム利用料（初期・一括）</p>
-        <p class="amount">¥200,000<small> （税別）</small></p>
-        <div class="note">
-          保守・運用費用はご契約内容によって異なります。既存の保守契約がある場合、その枠内でご案内できる場合もございますので、まずはお問い合わせください。
+
+      <div class="plan-layout">
+        <div class="plan-card">
+          <div class="plan-card__badge">プランは1つだけです</div>
+          <div class="plan-card__head">
+            <p class="plan-card__name">カイトリ番</p>
+            <p class="plan-card__for">特定金属くず買受業のための、本人確認記録・取引記録システム。機能の出し惜しみはしません。</p>
+            <div class="plan-card__price">¥248,000<small>（税別・買い切り）</small></div>
+            <div class="plan-card__unit">1営業所（ヤード）あたり</div>
+            <div class="plan-card__maint">年間保守 <b>¥49,800</b><span>※初年度からかかります</span></div>
+          </div>
+          <ul class="plan-card__list">
+            <li><b>利用人数 無制限</b><span>計量所に立つ方が日替わりでも、追加費用はかかりません</span></li>
+            <li>本人確認記録の作成（担当者名・記録作成者名まで）</li>
+            <li>取引記録の作成（日時・量・特徴・価額・支払方法）</li>
+            <li>身分証の撮影・保存</li>
+            <li><b>3年保存・自動アーカイブ</b></li>
+            <li><b>立入検査モード</b><span>期間・氏名を指定して、その場で出力・印刷</span></li>
+            <li>買受票／控えの発行</li>
+            <li><b>2営業所目以降 ＋¥98,000</b><span>保守 ＋¥19,800／年。届出・記録義務は営業所ごとに発生するためです</span></li>
+          </ul>
+          <a href="#contact" class="btn btn--solid">お見積もりを依頼する</a>
         </div>
-        <a href="#contact" class="btn btn--solid">お見積もりを依頼する</a>
+        <div class="plan-why">
+          <h3>なぜプランを分けないのか</h3>
+          <p>プランを分ければ、お客様は「どれを選ぶか」を考えなければなりません。当社も、どのお客様がどの機能を使えるかを管理しなければなりません。その時間は、どちらにとっても価値を生みません。</p>
+          <p>ですので、全部入りで1つだけにしました。お見積りが変わるのは営業所の数だけです。1ヤードなら¥248,000、3ヤードなら¥444,000。それだけです。</p>
+          <p class="plan-why__note">※非対面買取のeKYC対応、計量器・トラックスケール連携、車両ナンバー連携などは、現場の状況によって必要な作業が変わるため、個別にお見積りいたします。</p>
+        </div>
+      </div>
+
+      <h3 class="pricing-table-head">営業所の数だけで決まります（税別）</h3>
+      <div class="table-scroll">
+        <table class="pricing-table">
+          <tr><th>営業所数</th><th>初期（買い切り）</th><th>年間保守</th><th>初年度合計</th><th>3年合計</th></tr>
+          <tr class="highlight"><td><b>1ヤード</b></td><td>¥248,000</td><td>¥49,800</td><td><b>¥297,800</b></td><td><b>¥397,400</b></td></tr>
+          <tr><td>2ヤード</td><td>¥346,000</td><td>¥69,600</td><td><b>¥415,600</b></td><td>¥554,800</td></tr>
+          <tr><td>3ヤード</td><td>¥444,000</td><td>¥89,400</td><td><b>¥533,400</b></td><td>¥712,200</td></tr>
+          <tr><td>5ヤード</td><td>¥640,000</td><td>¥129,000</td><td><b>¥769,000</b></td><td>¥1,027,000</td></tr>
+        </table>
+      </div>
+      <p class="callout">
+        保守料は初年度からかかります（記録をお預かりするのは初日からのためです）。法改正に伴う機能追加・改修は保守の範囲外とし、必要が生じた場合は別途お見積りいたします。お支払いは一括のほか、3回分割（着手時・1か月後・2か月後）も承ります。
+      </p>
+
+      <div class="grid grid--3" style="margin-top: 48px;">
+        <div class="card">
+          <h3>届出ガイド（全8ページ）進呈</h3>
+          <p>対象判定から提出までの手順、法定の記録項目、立入検査で確認されやすい点をまとめた資料を無料でお送りします。手続きの詳細は管轄警察署にご確認ください。</p>
+        </div>
+        <div class="card">
+          <h3>導入サポート 無料</h3>
+          <p>店舗情報・品目・単価・標識まで、初期セットアップを当社で行います。オンライン1回＋電話で、実際に入力される方に操作をお伝えします。</p>
+        </div>
+        <div class="card">
+          <h3>紙・Excelからの記録取り込み 1回無料</h3>
+          <p>すでに紙やExcelで記録を始めている分を、こちらで取り込みます。6月からの記録が分断されません。</p>
+        </div>
       </div>
     </div>
   </section>
@@ -1590,6 +1749,18 @@
         <details class="faq-item">
           <summary>導入にはどのくらい時間がかかりますか？</summary>
           <p>店舗情報や品目・単価の登録、スタッフ研修まで含めて、おおむね数週間程度が目安です。詳しくは導入スケジュールをご覧ください。</p>
+        </details>
+        <details class="faq-item">
+          <summary>すでに基幹システムを入れています。乗り換えが必要ですか？</summary>
+          <p>いいえ。カイトリ番は単独で動きます。既存の基幹システムに買受記録の機能があるなら、無理に入れ替える必要はありません。そちらで記載事項が満たせるなら、そのままお使いいただくのが良いとお伝えしています。</p>
+        </details>
+        <details class="faq-item">
+          <summary>パソコンが苦手な社員でも使えますか？</summary>
+          <p>はい。計量所で使うことを前提に設計しています。免許証を撮って、品目と重量と金額を入れる。それだけです。</p>
+        </details>
+        <details class="faq-item">
+          <summary>もっと安いプランはありませんか？</summary>
+          <p>ございません。プランを分けると、お客様は選ぶ手間が、当社は管理の手間がかかります。その分を価格に乗せたくないため、全部入りで1つのプランにしています。ご予算のご都合がある場合は、3回分割（着手時・1か月後・2か月後）でのお支払いを承ります。</p>
         </details>
         <details class="faq-item">
           <summary>導入後のサポートはありますか？</summary>
